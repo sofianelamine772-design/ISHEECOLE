@@ -4,7 +4,7 @@ import { MapPin, Phone, Mail, Globe, MessageCircle } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="mx-3 mb-6 rounded-[2.5rem] bg-[#022C22] text-white overflow-hidden shadow-2xl">
+    <footer className="w-full bg-[#022C22] text-white overflow-hidden rounded-t-[5rem] shadow-[0_-20px_50px_rgba(0,0,0,0.1)]">
       <div className="max-w-7xl mx-auto px-6 sm:px-10 pt-16 pb-10">
 
         {/* Grid */}
