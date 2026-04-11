@@ -33,56 +33,61 @@ export default function Home() {
       <Nav />
 
       {/* Hero */}
-      <section className="pt-28 pb-16 sm:pt-32 md:pt-40 md:pb-24 bg-white overflow-hidden relative">
-        <div className="hidden lg:block absolute top-0 right-0 w-5/12 h-full opacity-[0.07] pointer-events-none">
-          <img src="/hero-bg.png" alt="" className="w-full h-full object-cover" />
+      <section className="pt-28 pb-16 sm:pt-32 md:pt-48 md:pb-32 bg-white overflow-hidden relative">
+        {/* Background Calligraphy */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-[0.05] pointer-events-none">
+          <img src="/hero-bg.png" alt="" className="w-full max-w-5xl h-auto object-contain" />
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
-            <motion.div {...fadeUp}>
-              <h1 className="font-arabic text-[2.4rem] sm:text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 leading-[1.15] mb-7">
-                L'excellence de{' '}
-                <span className="text-emerald-700 italic">la langue arabe</span>
-                {' '}à votre portée.
-              </h1>
-              <p className="text-base sm:text-lg text-gray-500 font-medium leading-relaxed max-w-xl mb-10">
-                Institut de référence à Toulouse. Pédagogie certifiée CECRL pour une maîtrise complète, de débutant à expert.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/programmes" className="btn-primary px-10 py-4 text-base shadow-lg shadow-emerald-900/20 inline-flex items-center justify-center gap-2">
-                  Voir nos cours <ArrowRight size={18} />
-                </Link>
-                <Link to="/inscription" className="btn-outline px-10 py-4 text-base inline-flex items-center justify-center">
-                  S'inscrire
-                </Link>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative text-center">
+          <motion.div {...fadeUp} className="max-w-4xl mx-auto">
+            <h1 className="font-arabic text-[2.8rem] sm:text-6xl md:text-7xl lg:text-8xl font-black text-gray-900 leading-[1.1] mb-8">
+              L'excellence de{' '}
+              <span className="text-emerald-700 italic">la langue arabe</span>
+              {' '}à votre portée.
+            </h1>
+            <p className="text-lg sm:text-xl text-gray-500 font-medium leading-relaxed max-w-2xl mx-auto mb-12">
+              Institut de référence à Toulouse. Pédagogie certifiée CECRL pour une maîtrise complète, du niveau débutant à l'expertise.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
+              <Link to="/programmes" className="btn-primary px-12 py-5 text-lg shadow-2xl shadow-emerald-900/20 inline-flex items-center justify-center gap-2 w-full sm:w-auto">
+                Voir nos cours <ArrowRight size={20} />
+              </Link>
+              <Link to="/inscription" className="btn-outline px-12 py-5 text-lg inline-flex items-center justify-center w-full sm:w-auto hover:bg-gray-50 transition-colors">
+                Pré-inscription
+              </Link>
+            </div>
+
+            <div className="mt-16 pt-10 border-t border-gray-100 flex flex-wrap items-center justify-center gap-12">
+              <div className="text-center group cursor-default">
+                <p className="text-3xl font-black text-gray-900 group-hover:text-emerald-700 transition-colors"><Counter value={1300} />+</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-2">Étudiants</p>
               </div>
-              <div className="mt-10 pt-8 border-t border-gray-100 flex flex-wrap items-center gap-8">
-                <div><p className="text-2xl font-black text-gray-900"><Counter value={1300} />+</p><p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-1">Étudiants</p></div>
-                <div><p className="text-2xl font-black text-gray-900"><Counter value={12} /></p><p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-1">Enseignants</p></div>
-                <div><p className="text-2xl font-black text-gray-900"><Counter value={15} /> ans</p><p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-1">D'expérience</p></div>
-                <div className="flex items-center gap-3 sm:ml-auto">
-                  <div className="flex -space-x-3">
-                    {[11,22,33,44,55].map(i => (
-                      <img key={i} src={`https://i.pravatar.cc/80?u=${i}`} alt="" className="w-9 h-9 rounded-full border-2 border-white object-cover shadow-sm" />
-                    ))}
+              <div className="text-center group cursor-default">
+                <p className="text-3xl font-black text-gray-900 group-hover:text-emerald-700 transition-colors"><Counter value={12} /></p>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-2">Enseignants</p>
+              </div>
+              <div className="text-center group cursor-default">
+                <p className="text-3xl font-black text-gray-900 group-hover:text-emerald-700 transition-colors"><Counter value={15} /> ans</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-2">Expertise</p>
+              </div>
+              
+              <div className="flex flex-col items-center gap-3">
+                <div className="flex -space-x-3">
+                  {[11,22,33,44,55].map(i => (
+                    <img key={i} src={`https://i.pravatar.cc/80?u=${i}`} alt="" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-md" />
+                  ))}
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="flex gap-0.5 text-amber-400">
+                    {[...Array(5)].map((_,j)=><Star key={j} size={12} fill="currentColor"/>)}
                   </div>
-                  <div>
-                    <div className="flex gap-0.5 text-amber-400">{[...Array(5)].map((_,j)=><Star key={j} size={11} fill="currentColor"/>)}</div>
-                    <p className="text-[10px] text-gray-400 font-bold mt-0.5">Rejoignez-nous</p>
-                  </div>
+                  <p className="text-[10px] text-gray-400 font-bold mt-1 uppercase tracking-widest">Rejoignez-nous</p>
                 </div>
               </div>
-            </motion.div>
-            <div className="hidden lg:flex relative items-center justify-center">
-              <div className="w-full aspect-square bg-gray-50 rounded-[3rem] overflow-hidden border border-gray-100 flex items-center justify-center p-10">
-                <img src="/hero-bg.png" alt="Calligraphie" className="w-full h-auto opacity-40" />
-              </div>
-              <div className="absolute bottom-8 left-8 bg-white p-6 rounded-2xl shadow-xl border border-gray-100 max-w-[190px]">
-                <div className="flex items-center gap-2 text-emerald-700 mb-2"><Trophy size={15}/><span className="text-[10px] font-black uppercase tracking-widest">N°1 Toulouse</span></div>
-                <p className="text-xs text-gray-500 font-semibold">Meilleur institut de langues 2024.</p>
-              </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
