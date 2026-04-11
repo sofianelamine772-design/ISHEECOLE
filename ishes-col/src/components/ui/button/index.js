@@ -1,4 +1,4 @@
-import { cva } from "class-variance-authority";
+import { cva } from "../../../../node_modules/class-variance-authority/dist/index.mjs";
 
 export { default as Button } from "./Button.vue";
 
