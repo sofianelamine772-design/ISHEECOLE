@@ -142,7 +142,7 @@ const Step3 = ({ data, onBack, onNext }) => (
       </h3>
       
       <p className="text-base md:text-lg font-bold leading-relaxed mb-6">
-        "Une fois que vous avez payé, vous pourrez vous inscrire avec l'adresse mail indiquée précédemment (<span className="text-emerald-300">{data.email}</span>) sur notre interface <span className="underline decoration-emerald-400 underline-offset-8 decoration-4">ISHEECOLE</span> !"
+        "Une fois que vous avez payé, vous pourrez vous inscrire avec l'adresse mail indiquée précédemment (<span className="text-emerald-300">{data.email}</span>) sur notre interface <a href="https://isheecole-ejbm.vercel.app" target="_blank" rel="noopener noreferrer" className="underline decoration-emerald-400 underline-offset-8 decoration-4 hover:text-emerald-200 transition-colors">ISHEECOLE</a> !"
       </p>
 
       <div className="flex items-center justify-center gap-2 py-3 px-6 bg-white/10 rounded-full inline-block mx-auto border border-white/10">
@@ -270,11 +270,13 @@ const Success = ({ data }) => {
       <p className="text-gray-500 font-medium leading-relaxed mb-8">
         Bienvenue <strong className="text-gray-900">{data.prenom} {data.nom}</strong> !<br />
         Un email de confirmation a été envoyé à <strong className="text-gray-900">{data.email}</strong>.<br />
-        Vous pouvez maintenant vous connecter à votre espace élève.
+        Vous pouvez maintenant vous connecter à votre nouvel espace élève pour commencer.
       </p>
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <Link to="/" className="btn-primary px-10 py-4 inline-flex items-center gap-2">Retour à l'accueil <ArrowRight size={16} /></Link>
-        <Link to="/programmes" className="btn-outline px-10 py-4">Voir nos programmes</Link>
+        <a href="https://isheecole-ejbm.vercel.app" target="_blank" rel="noopener noreferrer" className="bg-emerald-600 text-white px-10 py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-emerald-900/20 transition-all hover:-translate-y-1 inline-flex items-center gap-2">
+          Accéder à ISHEECOLE <ArrowRight size={18} />
+        </a>
+        <Link to="/" className="btn-outline px-10 py-4">Retour au site</Link>
       </div>
     </motion.div>
   );
