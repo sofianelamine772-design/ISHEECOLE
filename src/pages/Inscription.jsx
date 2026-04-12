@@ -124,39 +124,56 @@ const Step2 = ({ data, onChange, onNext, onBack }) => (
 
 // ─── Step 3 : Nouvelle étape Mascotte ────────────────────────────────────────
 const Step3 = ({ data, onBack, onNext }) => (
-  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="flex flex-col items-center py-4">
-    <motion.div 
-      animate={{ y: [0, -15, 0] }} 
-      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      className="relative mb-6"
-    >
-      <img src="/mascotte-ville.png" alt="Guide ISHES" className="w-64 md:w-80 h-auto drop-shadow-[0_20px_50px_rgba(5,150,105,0.3)]" />
-    </motion.div>
-
-    <div className="relative bg-emerald-700 text-white p-8 md:p-10 rounded-[3rem] shadow-2xl text-center max-w-lg mb-10 overflow-hidden">
-      {/* Decorative arrow */}
-      <div className="absolute top-[-10px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[20px] border-b-emerald-700"></div>
+  <motion.div 
+    initial={{ opacity: 0, scale: 0.95 }} 
+    animate={{ opacity: 1, scale: 1 }} 
+    exit={{ opacity: 0, scale: 0.95 }} 
+    className="flex flex-col items-center"
+  >
+    {/* Container Mascotte + Bulle (Adaptatif) */}
+    <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 w-full mb-8 lg:py-6">
       
-      <h3 className="text-xl md:text-2xl font-black mb-4 flex items-center justify-center gap-3">
-        <MessageSquare size={24} className="text-emerald-300" /> Information Importante
-      </h3>
-      
-      <p className="text-base md:text-lg font-bold leading-relaxed mb-6">
-        "Une fois que vous avez payé, vous pourrez vous inscrire avec l'adresse mail indiquée précédemment (<span className="text-emerald-300">{data.email}</span>) sur notre interface <a href="https://isheecole-ejbm.vercel.app" target="_blank" rel="noopener noreferrer" className="underline decoration-emerald-400 underline-offset-8 decoration-4 hover:text-emerald-200 transition-colors">ISHEECOLE</a> !"
-      </p>
+      {/* Mascotte */}
+      <motion.div 
+        animate={{ y: [0, -15, 0] }} 
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="flex-shrink-0"
+      >
+        <img 
+          src="/mascotte-ville.png" 
+          alt="Guide ISHES" 
+          className="w-40 md:w-56 lg:w-72 h-auto drop-shadow-[0_20px_50px_rgba(5,150,105,0.3)] transition-all" 
+        />
+      </motion.div>
 
-      <div className="flex items-center justify-center gap-2 py-3 px-6 bg-white/10 rounded-full inline-block mx-auto border border-white/10">
-        <Shield size={16} className="text-emerald-300" />
-        <span className="text-[10px] font-black uppercase tracking-widest">Activation instantanée de votre accès</span>
+      {/* Speech Bubble */}
+      <div className="relative bg-emerald-700 text-white p-6 md:p-10 rounded-[2.5rem] lg:rounded-[3.5rem] shadow-2xl text-center lg:text-left flex-1 overflow-hidden border border-white/5">
+        {/* Decorative arrow (Mobile: Top / Desktop: Left) */}
+        <div className="absolute lg:hidden top-[-10px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[15px] border-b-emerald-700"></div>
+        <div className="hidden lg:block absolute left-[-10px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[15px] border-t-transparent border-b-[15px] border-b-transparent border-r-[15px] border-r-emerald-700"></div>
+        
+        <h3 className="text-lg md:text-xl font-black mb-3 flex items-center justify-center lg:justify-start gap-3">
+          <MessageSquare size={20} className="text-emerald-300" /> Message de la ville
+        </h3>
+        
+        <p className="text-sm md:text-base font-bold leading-relaxed mb-6">
+          "Une fois payé, utilisez votre mail (<span className="text-emerald-300">{data.email}</span>) pour vous inscrire sur <a href="https://isheecole-ejbm.vercel.app" target="_blank" rel="noopener noreferrer" className="underline decoration-emerald-300 underline-offset-4 decoration-2 hover:text-emerald-100 transition-colors">ISHEECOLE</a> !"
+        </p>
+
+        <div className="flex items-center justify-center lg:justify-start gap-2 py-2.5 px-5 bg-white/10 rounded-full inline-flex border border-white/10">
+          <Shield size={14} className="text-emerald-300" />
+          <span className="text-[9px] font-black uppercase tracking-widest">Activation automatique</span>
+        </div>
       </div>
     </div>
 
-    <div className="flex gap-4 w-full">
-      <button onClick={onBack} className="flex-1 py-4 rounded-2xl border-2 border-gray-200 font-black text-gray-600 flex items-center justify-center gap-2 hover:border-gray-300 transition-all">
+    {/* Buttons Actions */}
+    <div className="flex flex-col sm:flex-row gap-4 w-full mt-auto">
+      <button onClick={onBack} className="flex-1 py-4 rounded-2xl border-2 border-gray-200 font-black text-gray-600 flex items-center justify-center gap-2 hover:border-gray-300 transition-all text-sm">
         <ChevronLeft size={18} /> Retour
       </button>
-      <button onClick={onNext} className="flex-[2] bg-emerald-700 text-white py-4 px-8 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl shadow-emerald-900/20 hover:bg-emerald-800 transition-all hover:-translate-y-1">
-        J'ai compris, passer au paiement <ChevronRight size={18} />
+      <button onClick={onNext} className="flex-[2] bg-emerald-700 text-white py-4 px-8 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl shadow-emerald-900/20 hover:bg-emerald-800 transition-all hover:-translate-y-1 text-sm uppercase tracking-wider">
+        J'ai compris, payer <ChevronRight size={18} />
       </button>
     </div>
   </motion.div>
@@ -309,7 +326,7 @@ export default function Inscription() {
       <Nav />
 
       <div className="pt-28 pb-20 md:pt-36">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
 
           {/* Top label */}
           {!done && (
