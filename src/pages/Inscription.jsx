@@ -134,13 +134,6 @@ const Step3 = ({ data, onBack, onSuccess }) => {
   const handlePay = async (e) => {
     e.preventDefault();
     setPaying(true);
-    // 🔌 TODO: Connect to your backend to create a Stripe PaymentIntent
-    // const res = await fetch('/api/create-payment-intent', {
-    //   method: 'POST',
-    //   body: JSON.stringify({ amount: selected.price * 100, currency: 'eur', ...data })
-    // });
-    // const { clientSecret } = await res.json();
-    // Then use @stripe/react-stripe-js to confirm card payment
     setTimeout(() => { setPaying(false); onSuccess(); }, 2000); // Simulated for now
   };
 
@@ -149,14 +142,38 @@ const Step3 = ({ data, onBack, onSuccess }) => {
       <h2 className="font-arabic text-2xl font-black text-gray-900 mb-2">Paiement sécurisé</h2>
       <p className="text-sm text-gray-400 font-medium mb-8">Vos données sont chiffrées et sécurisées par Stripe.</p>
 
+      {/* Guide Mascotte Section */}
+      <div className="mb-10 flex flex-col items-center">
+        <motion.div 
+          animate={{ y: [0, -10, 0] }} 
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="relative z-10"
+        >
+          <img src="/mascotte-ville.png" alt="Guide ISHES" className="w-48 h-auto drop-shadow-2xl" />
+        </motion.div>
+        
+        {/* Speech Bubble */}
+        <div className="relative mt-[-20px] bg-emerald-700 text-white p-6 rounded-[2rem] shadow-xl text-center max-w-sm">
+          <div className="absolute top-[-10px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[15px] border-b-emerald-700"></div>
+          
+          <p className="text-sm font-bold leading-relaxed">
+            "Une fois que vous avez payé, vous pourrez vous connecter instantanément à votre espace élève sur <span className="underline decoration-emerald-400 underline-offset-4 tracking-tighter">ISHEECOLE</span> en utilisant l'adresse mail indiquée précédemment !"
+          </p>
+          <div className="mt-3 flex items-center justify-center gap-2 opacity-60">
+            <Mail size={12} />
+            <span className="text-[10px] font-black uppercase tracking-widest">{data.email}</span>
+          </div>
+        </div>
+      </div>
+
       {/* Order summary */}
       <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-100 mb-8">
         <div className="flex justify-between items-start">
           <div>
-            <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-1">Récapitulatif</p>
+            <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-1">Dernière étape</p>
             <p className="font-bold text-gray-900 text-sm">{selected?.label}</p>
             <p className="text-xs text-gray-500 mt-0.5">{selected?.duration}</p>
-            <p className="font-medium text-sm text-gray-600 mt-1">Pour : {data.prenom} {data.nom}</p>
+            <p className="font-medium text-sm text-gray-600 mt-1">Élève : {data.prenom} {data.nom}</p>
           </div>
           <div className="text-right">
             <p className="text-3xl font-black text-gray-900">{selected?.price} €</p>
