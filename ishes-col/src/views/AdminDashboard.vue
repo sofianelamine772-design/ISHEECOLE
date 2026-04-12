@@ -1,7 +1,7 @@
 <script setup>
 import { ref, inject, reactive } from 'vue'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -65,77 +65,89 @@ const submitStudent = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-50 flex font-sans">
+  <div class="min-h-screen bg-white flex font-sans text-slate-900 antialiased">
     <!-- Sidebar -->
-    <aside class="w-64 bg-[#0F172A] text-white hidden md:flex flex-col">
-      <div class="p-8">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 bg-[#065F46] rounded-lg flex items-center justify-center text-white">
-            <School :size="18" />
+    <aside class="w-72 bg-[#0F172A] text-white hidden md:flex flex-col relative overflow-hidden">
+      <!-- Sidebar Background Decor -->
+      <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-emerald-500/10 to-transparent pointer-events-none"></div>
+      
+      <div class="p-10 relative z-10">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-white shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+            <School :size="20" />
           </div>
-          <h1 class="text-2xl font-bold tracking-tight">ISHEE<span class="text-emerald-400">COLE</span></h1>
+          <h1 class="text-2xl font-black tracking-tighter uppercase italic">ISHEE<span class="text-emerald-400">COLE</span></h1>
         </div>
-        <p class="text-[10px] text-slate-500 mt-2 uppercase tracking-[0.2em] font-bold">Système de Gestion</p>
+        <p class="text-[9px] text-slate-500 mt-3 uppercase tracking-[0.4em] font-black pl-1">Management Engine v1</p>
       </div>
-      <nav class="flex-1 px-4 mt-4 space-y-1">
+
+      <nav class="flex-1 px-6 mt-6 space-y-2 relative z-10">
         <Button variant="ghost" 
           @click="activeTab = 'overview'"
-          :class="[activeTab === 'overview' ? 'bg-emerald-500/10 text-emerald-400' : 'text-slate-400 hover:text-white hover:bg-white/5']"
-          class="w-full justify-start gap-3">
-          <LayoutDashboard :size="20" /> Dashboard
+          :class="[activeTab === 'overview' ? 'bg-emerald-500 text-white shadow-[0_10px_20px_rgba(16,185,129,0.2)]' : 'text-slate-400 hover:text-white hover:bg-white/5']"
+          class="w-full justify-start gap-3 h-12 font-bold uppercase tracking-widest text-[10px] transition-all">
+          <LayoutDashboard :size="18" /> Aperçu Global
         </Button>
         <Button variant="ghost" 
           @click="activeTab = 'classes'"
-          :class="[activeTab === 'classes' ? 'bg-emerald-500/10 text-emerald-400' : 'text-slate-400 hover:text-white hover:bg-white/5']"
-          class="w-full justify-start gap-3">
-          <BookOpen :size="20" /> Classes
+          :class="[activeTab === 'classes' ? 'bg-emerald-500 text-white shadow-[0_10px_20px_rgba(16,185,129,0.2)]' : 'text-slate-400 hover:text-white hover:bg-white/5']"
+          class="w-full justify-start gap-3 h-12 font-bold uppercase tracking-widest text-[10px] transition-all">
+          <BookOpen :size="18" /> Gestion Classes
         </Button>
         <Button variant="ghost" 
           @click="activeTab = 'enrollments'"
-          :class="[activeTab === 'enrollments' ? 'bg-emerald-500/10 text-emerald-400' : 'text-slate-400 hover:text-white hover:bg-white/5']"
-          class="w-full justify-start gap-3">
-          <Plus :size="20" /> Inscriptions
+          :class="[activeTab === 'enrollments' ? 'bg-emerald-500 text-white shadow-[0_10px_20px_rgba(16,185,129,0.2)]' : 'text-slate-400 hover:text-white hover:bg-white/5']"
+          class="w-full justify-start gap-3 h-12 font-bold uppercase tracking-widest text-[10px] transition-all">
+          <Plus :size="18" /> Inscriptions
         </Button>
         <Button variant="ghost" 
           @click="activeTab = 'billing'"
-          :class="[activeTab === 'billing' ? 'bg-emerald-500/10 text-emerald-400' : 'text-slate-400 hover:text-white hover:bg-white/5']"
-          class="w-full justify-start gap-3">
-          <DollarSign :size="20" /> Facturation
-        </Button>
-        <Button variant="ghost" class="w-full justify-start gap-3 text-slate-400 hover:text-white hover:bg-white/5">
-          <Settings :size="20" /> Configuration
+          :class="[activeTab === 'billing' ? 'bg-emerald-500 text-white shadow-[0_10px_20px_rgba(16,185,129,0.2)]' : 'text-slate-400 hover:text-white hover:bg-white/5']"
+          class="w-full justify-start gap-3 h-12 font-bold uppercase tracking-widest text-[10px] transition-all">
+          <DollarSign :size="18" /> Facturation
         </Button>
       </nav>
-      <div class="p-6 mt-auto">
-        <div class="bg-slate-800/50 rounded-2xl p-4 border border-slate-700">
-          <p class="text-xs text-slate-400">Version 1.1.0</p>
-          <Button variant="ghost" class="w-full mt-2 justify-start gap-3 p-0 h-auto text-slate-400 hover:text-destructive" @click="emit('logout')">
-            <LogOut :size="16" /> Déconnecter
+
+      <div class="p-8 relative z-10">
+        <div class="bg-white/5 rounded-2xl p-6 border border-white/5 backdrop-blur-sm">
+          <div class="flex items-center gap-3 mb-4">
+             <Avatar class="h-8 w-8 ring-2 ring-emerald-500/20">
+                <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin" />
+                <AvatarFallback>AD</AvatarFallback>
+             </Avatar>
+             <div>
+                <p class="text-[10px] font-black uppercase text-white">Directeur</p>
+                <p class="text-[9px] text-slate-500">Session Active</p>
+             </div>
+          </div>
+          <Button variant="ghost" class="w-full justify-start gap-3 p-0 h-auto text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-red-400 transition-colors" @click="emit('logout')">
+            <LogOut :size="14" /> Déconnexion
           </Button>
         </div>
       </div>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-10 overflow-y-auto">
+    <main class="flex-1 p-12 overflow-y-auto bg-slate-50/50">
       <!-- Section: Header -->
-      <div class="flex items-center justify-between mb-10">
+      <div class="flex items-center justify-between mb-16">
         <div>
-          <h2 class="text-3xl font-black text-slate-900 tracking-tight">
-            {{ activeTab === 'overview' ? 'Aperçu Global' : activeTab === 'classes' ? 'Gestion des Classes' : activeTab === 'enrollments' ? 'Nouveaux Inscrits' : 'Historique Facturation' }}
+          <h2 class="text-4xl font-black text-slate-900 tracking-tighter uppercase italic">
+            {{ activeTab === 'overview' ? 'Aperçu' : activeTab === 'classes' ? 'Classes' : activeTab === 'enrollments' ? 'Inscriptions' : 'Finance' }}
+            <span class="text-emerald-500">.</span>
           </h2>
-          <p class="text-slate-500 mt-1">Gérez votre institut ISHEECOLE en temps réel.</p>
+          <p class="text-slate-400 font-medium text-sm mt-2 tracking-wide">Interface de pilotage ISHEECOLE v1.1</p>
         </div>
         <div class="flex items-center gap-4">
-          <Button @click="activeTab === 'classes' ? showClassModal = true : showStudentModal = true" class="bg-[#065F46] hover:bg-[#022C22] shadow-lg shadow-emerald-500/20 px-6 font-bold gap-2 text-white">
-            <Plus :size="18" /> {{ activeTab === 'classes' ? 'Créer une classe' : 'Ajouter un élève' }}
+          <Button @click="activeTab === 'classes' ? showClassModal = true : showStudentModal = true" class="bg-[#0F172A] hover:bg-emerald-600 text-white h-12 px-8 font-bold uppercase tracking-widest text-[10px] gap-3 shadow-xl transition-all hover:translate-y-[-2px]">
+            <Plus :size="18" /> {{ activeTab === 'classes' ? 'Nouvelle classe' : 'Nouvel élève' }}
           </Button>
         </div>
       </div>
 
       <!-- Modals (Simplified) -->
       <div v-if="showClassModal || showStudentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
-        <Card class="w-full max-w-md shadow-2xl">
+        <Card class="w-full max-w-md shadow-2xl overflow-hidden">
           <CardHeader>
             <CardTitle>{{ showClassModal ? 'Nouvelle Classe' : 'Nouvel Élève' }}</CardTitle>
           </CardHeader>
@@ -154,7 +166,7 @@ const submitStudent = () => {
               </select>
             </div>
           </CardContent>
-            <CardFooter class="gap-2">
+          <CardFooter class="gap-2">
             <Button variant="ghost" @click="showClassModal = false; showStudentModal = false">Annuler</Button>
             <Button class="flex-1 bg-[#065F46] hover:bg-[#022C22] text-white" @click="showClassModal ? submitClass() : submitStudent()">Enregistrer</Button>
           </CardFooter>
@@ -163,25 +175,20 @@ const submitStudent = () => {
 
       <!-- --- VUE: APERÇU (OVERVIEW) --- -->
       <div v-if="activeTab === 'overview'">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <Card v-for="stat in stats" :key="stat.name" class="border-none shadow-sm hover:shadow-md transition-shadow">
-            <CardContent class="p-6">
-              <div class="flex items-center justify-between">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <Card v-for="stat in stats" :key="stat.name" class="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all duration-500 bg-white group overflow-hidden">
+            <CardContent class="p-8 relative">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
+              <div class="flex items-center justify-between relative z-10">
                 <div>
-                  <p class="text-sm font-bold text-slate-400 uppercase tracking-tight">{{ stat.name }}</p>
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">{{ stat.name }}</p>
                   <div class="flex items-baseline gap-2 mt-1">
-                    <p class="text-3xl font-black text-slate-900">{{ stat.value }}</p>
-                    <span class="text-xs font-bold text-green-600">{{ stat.change }}</span>
+                    <p class="text-4xl font-black text-slate-900 tracking-tighter">{{ stat.value }}</p>
+                    <Badge variant="ghost" class="text-[10px] font-bold text-emerald-600 bg-emerald-50 border-none">{{ stat.change }}</Badge>
                   </div>
                 </div>
-                <div :class="[stat.bg, stat.color, 'p-4 rounded-2xl']">
+                <div :class="[stat.bg, stat.color, 'p-4 rounded-2xl shadow-sm transition-transform group-hover:rotate-12']">
                   <component :is="stat.icon" :size="24" />
-                </div>
-              </div>
-              <div class="mt-6 h-12 flex items-end gap-1">
-                <div v-for="(h, i) in recentRevenue" :key="i" 
-                     class="flex-1 bg-slate-100 rounded-t-sm transition-all hover:bg-emerald-400"
-                     :style="{ height: `${h}%` }">
                 </div>
               </div>
             </CardContent>
@@ -189,55 +196,56 @@ const submitStudent = () => {
         </div>
 
         <!-- Student List shown in Overview -->
-        <Card class="border-none shadow-xl overflow-hidden bg-white">
-          <CardHeader class="border-b border-slate-50 p-8">
+        <Card class="border-none shadow-[0_12px_40px_rgba(0,0,0,0.06)] overflow-hidden bg-white rounded-3xl">
+          <CardHeader class="border-b border-slate-50 p-10 bg-gradient-to-r from-white to-slate-50/50">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
-                <CardTitle class="text-xl font-bold">Base Elèves</CardTitle>
-                <CardDescription>Visualisez tous les inscrits.</CardDescription>
+                <CardTitle class="text-2xl font-black italic uppercase italic tracking-tight text-slate-800">Base <span class="text-emerald-500">Elèves</span></CardTitle>
+                <CardDescription class="text-slate-400 font-medium mt-1">Registre complet des inscriptions actives sur ISHEECOLE.</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent class="p-0">
             <Table>
-              <TableHeader class="bg-slate-50/50">
-                <TableRow class="border-none">
-                  <TableHead class="pl-8 h-12">Élève</TableHead>
-                  <TableHead>Plan</TableHead>
-                  <TableHead>État</TableHead>
-                  <TableHead class="text-right pr-8">Actions</TableHead>
+              <TableHeader class="bg-slate-50/50 border-b border-slate-100">
+                <TableRow class="border-none h-14">
+                  <TableHead class="pl-10 font-bold uppercase text-[10px] tracking-widest text-slate-400">Élève</TableHead>
+                  <TableHead class="font-bold uppercase text-[10px] tracking-widest text-slate-400">Plan</TableHead>
+                  <TableHead class="font-bold uppercase text-[10px] tracking-widest text-slate-400">État du Compte</TableHead>
+                  <TableHead class="text-right pr-10 font-bold uppercase text-[10px] tracking-widest text-slate-400">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                 <TableRow v-for="std in students" :key="std.id" class="hover:bg-slate-50 transition-colors">
-                  <TableCell class="pl-8">
-                    <div class="flex items-center gap-3">
-                      <Avatar class="h-8 w-8">
+                 <TableRow v-for="std in students" :key="std.id" class="hover:bg-slate-50/80 transition-all border-b border-slate-50 last:border-none h-20">
+                  <TableCell class="pl-10">
+                    <div class="flex items-center gap-4">
+                      <Avatar class="h-10 w-10 ring-2 ring-slate-100 transition-all hover:ring-emerald-400/30">
+                        <AvatarImage :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${std.name}`" />
                         <AvatarFallback>{{ std.name.split(' ').map(n=>n[0]).join('') }}</AvatarFallback>
                       </Avatar>
                       <div>
-                        <p class="font-bold leading-none">{{ std.name }}</p>
-                        <p class="text-xs text-muted-foreground mt-1">{{ std.email }}</p>
+                        <p class="font-black text-slate-800 leading-none mb-1 text-sm">{{ std.name }}</p>
+                        <p class="text-xs text-slate-400 font-medium">{{ std.email }}</p>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <p class="text-sm font-medium uppercase text-slate-500">{{ std.plan }}</p>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 bg-slate-100 px-2 py-1 rounded inline-block">{{ std.plan }}</p>
                   </TableCell>
                   <TableCell>
                     <Badge 
                       :class="[
-                        std.status === 'Payé' ? 'bg-green-100 text-green-700' : 
-                        std.status === 'En attente' ? 'bg-yellow-100 text-yellow-700' : 
-                        'bg-red-100 text-red-700',
-                        'border-none'
+                        std.status === 'Payé' ? 'bg-emerald-100 text-emerald-700' : 
+                        std.status === 'En attente' ? 'bg-amber-100 text-amber-700' : 
+                        'bg-rose-100 text-rose-700',
+                        'border-none font-bold text-[10px] uppercase px-3'
                       ]"
                     >
                       {{ std.status }}
                     </Badge>
                   </TableCell>
-                  <TableCell class="text-right pr-8">
-                    <Button variant="ghost" size="sm" class="text-emerald-600">Détails</Button>
+                  <TableCell class="text-right pr-10">
+                    <Button variant="ghost" size="sm" class="text-emerald-600 font-bold hover:bg-emerald-50 transition-colors uppercase tracking-widest text-[10px]">Voir Profil</Button>
                   </TableCell>
                 </TableRow>
               </TableBody>
