@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   User, Mail, Phone, BookOpen, ChevronRight, ChevronLeft,
-  CheckCircle2, CreditCard, Lock, Shield, ArrowRight
+  CheckCircle2, CreditCard, Lock, Shield, ArrowRight, MessageSquare
 } from 'lucide-react';
 import Nav from '../components/Nav';
 
@@ -16,9 +16,9 @@ const programmes = [
   { id: 'intensif', label: 'Stage Intensif d\'Été', price: 540, duration: '4 semaines · 4h/jour' },
 ];
 
-// ─── Step Indicator ──────────────────────────────────────────────────────────
+// ─── Step Indicator (MAJ : 4 étapes) ──────────────────────────────────────────
 const StepIndicator = ({ current }) => {
-  const steps = ['Vos infos', 'Programme', 'Paiement'];
+  const steps = ['Infos', 'Cours', 'Important', 'Paiement'];
   return (
     <div className="flex items-center gap-0 mb-12">
       {steps.map((label, i) => {
@@ -32,7 +32,7 @@ const StepIndicator = ({ current }) => {
                 ${done ? 'bg-emerald-600 text-white' : active ? 'bg-emerald-700 text-white ring-4 ring-emerald-100' : 'bg-gray-100 text-gray-400'}`}>
                 {done ? <CheckCircle2 size={18} /> : idx}
               </div>
-              <span className={`text-[10px] font-black uppercase tracking-widest whitespace-nowrap ${active ? 'text-emerald-700' : done ? 'text-emerald-500' : 'text-gray-300'}`}>
+              <span className={`text-[9px] font-black uppercase tracking-widest whitespace-nowrap ${active ? 'text-emerald-700' : done ? 'text-emerald-500' : 'text-gray-300'}`}>
                 {label}
               </span>
             </div>
@@ -116,14 +116,54 @@ const Step2 = ({ data, onChange, onNext, onBack }) => (
       </button>
       <button onClick={onNext} disabled={!data.programme}
         className="flex-1 bg-emerald-700 text-white py-4 rounded-2xl font-black flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/15 hover:bg-emerald-800 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
-        Passer au paiement <ChevronRight size={18} />
+        Continuer <ChevronRight size={18} />
       </button>
     </div>
   </motion.div>
 );
 
-// ─── Step 3 : Paiement Stripe ────────────────────────────────────────────────
-const Step3 = ({ data, onBack, onSuccess }) => {
+// ─── Step 3 : Nouvelle étape Mascotte ────────────────────────────────────────
+const Step3 = ({ data, onBack, onNext }) => (
+  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="flex flex-col items-center py-4">
+    <motion.div 
+      animate={{ y: [0, -15, 0] }} 
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      className="relative mb-6"
+    >
+      <img src="/mascotte-ville.png" alt="Guide ISHES" className="w-64 md:w-80 h-auto drop-shadow-[0_20px_50px_rgba(5,150,105,0.3)]" />
+    </motion.div>
+
+    <div className="relative bg-emerald-700 text-white p-8 md:p-10 rounded-[3rem] shadow-2xl text-center max-w-lg mb-10 overflow-hidden">
+      {/* Decorative arrow */}
+      <div className="absolute top-[-10px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[20px] border-b-emerald-700"></div>
+      
+      <h3 className="text-xl md:text-2xl font-black mb-4 flex items-center justify-center gap-3">
+        <MessageSquare size={24} className="text-emerald-300" /> Information Importante
+      </h3>
+      
+      <p className="text-base md:text-lg font-bold leading-relaxed mb-6">
+        "Une fois que vous avez payé, vous pourrez vous inscrire avec l'adresse mail indiquée précédemment (<span className="text-emerald-300">{data.email}</span>) sur notre interface <span className="underline decoration-emerald-400 underline-offset-8 decoration-4">ISHEECOLE</span> !"
+      </p>
+
+      <div className="flex items-center justify-center gap-2 py-3 px-6 bg-white/10 rounded-full inline-block mx-auto border border-white/10">
+        <Shield size={16} className="text-emerald-300" />
+        <span className="text-[10px] font-black uppercase tracking-widest">Activation instantanée de votre accès</span>
+      </div>
+    </div>
+
+    <div className="flex gap-4 w-full">
+      <button onClick={onBack} className="flex-1 py-4 rounded-2xl border-2 border-gray-200 font-black text-gray-600 flex items-center justify-center gap-2 hover:border-gray-300 transition-all">
+        <ChevronLeft size={18} /> Retour
+      </button>
+      <button onClick={onNext} className="flex-[2] bg-emerald-700 text-white py-4 px-8 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl shadow-emerald-900/20 hover:bg-emerald-800 transition-all hover:-translate-y-1">
+        J'ai compris, passer au paiement <ChevronRight size={18} />
+      </button>
+    </div>
+  </motion.div>
+);
+
+// ─── Step 4 : Paiement Stripe ────────────────────────────────────────────────
+const Step4 = ({ data, onBack, onSuccess }) => {
   const selected = programmes.find(p => p.id === data.programme);
   const [paying, setPaying] = useState(false);
   const [cardData, setCardData] = useState({ numero: '', expiry: '', cvc: '', titulaire: '' });
@@ -134,46 +174,21 @@ const Step3 = ({ data, onBack, onSuccess }) => {
   const handlePay = async (e) => {
     e.preventDefault();
     setPaying(true);
-    setTimeout(() => { setPaying(false); onSuccess(); }, 2000); // Simulated for now
+    setTimeout(() => { setPaying(false); onSuccess(); }, 2000); // Simulated
   };
 
   return (
     <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
-      <h2 className="font-arabic text-2xl font-black text-gray-900 mb-2">Paiement sécurisé</h2>
-      <p className="text-sm text-gray-400 font-medium mb-8">Vos données sont chiffrées et sécurisées par Stripe.</p>
-
-      {/* Guide Mascotte Section */}
-      <div className="mb-10 flex flex-col items-center">
-        <motion.div 
-          animate={{ y: [0, -10, 0] }} 
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="relative z-10"
-        >
-          <img src="/mascotte-ville.png" alt="Guide ISHES" className="w-48 h-auto drop-shadow-2xl" />
-        </motion.div>
-        
-        {/* Speech Bubble */}
-        <div className="relative mt-[-20px] bg-emerald-700 text-white p-6 rounded-[2rem] shadow-xl text-center max-w-sm">
-          <div className="absolute top-[-10px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[15px] border-b-emerald-700"></div>
-          
-          <p className="text-sm font-bold leading-relaxed">
-            "Une fois que vous avez payé, vous pourrez vous connecter instantanément à votre espace élève sur <span className="underline decoration-emerald-400 underline-offset-4 tracking-tighter">ISHEECOLE</span> en utilisant l'adresse mail indiquée précédemment !"
-          </p>
-          <div className="mt-3 flex items-center justify-center gap-2 opacity-60">
-            <Mail size={12} />
-            <span className="text-[10px] font-black uppercase tracking-widest">{data.email}</span>
-          </div>
-        </div>
-      </div>
+      <h2 className="font-arabic text-2xl font-black text-gray-900 mb-2">Finalisation du paiement</h2>
+      <p className="text-sm text-gray-400 font-medium mb-8">Paiement 100% sécurisé via Stripe.</p>
 
       {/* Order summary */}
       <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-100 mb-8">
         <div className="flex justify-between items-start">
           <div>
-            <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-1">Dernière étape</p>
+            <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-1">Résumé de la commande</p>
             <p className="font-bold text-gray-900 text-sm">{selected?.label}</p>
             <p className="text-xs text-gray-500 mt-0.5">{selected?.duration}</p>
-            <p className="font-medium text-sm text-gray-600 mt-1">Élève : {data.prenom} {data.nom}</p>
           </div>
           <div className="text-right">
             <p className="text-3xl font-black text-gray-900">{selected?.price} €</p>
@@ -234,7 +249,7 @@ const Step3 = ({ data, onBack, onSuccess }) => {
             {paying ? (
               <><span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />Traitement…</>
             ) : (
-              <><Lock size={16} /> Payer {selected?.price} €</>
+              <><Lock size={16} /> Valider le paiement</>
             )}
           </button>
         </div>
@@ -252,12 +267,10 @@ const Success = ({ data }) => {
         <CheckCircle2 size={48} className="text-emerald-600" />
       </div>
       <h2 className="font-arabic text-3xl font-black text-gray-900 mb-4">Inscription confirmée !</h2>
-      <p className="text-gray-500 font-medium leading-relaxed mb-2">
-        Bienvenue <strong className="text-gray-900">{data.prenom} {data.nom}</strong> !
-      </p>
       <p className="text-gray-500 font-medium leading-relaxed mb-8">
+        Bienvenue <strong className="text-gray-900">{data.prenom} {data.nom}</strong> !<br />
         Un email de confirmation a été envoyé à <strong className="text-gray-900">{data.email}</strong>.<br />
-        Notre équipe vous contactera sous 24h pour organiser votre première séance de <strong>{selected?.label}</strong>.
+        Vous pouvez maintenant vous connecter à votre espace élève.
       </p>
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <Link to="/" className="btn-primary px-10 py-4 inline-flex items-center gap-2">Retour à l'accueil <ArrowRight size={16} /></Link>
@@ -316,7 +329,8 @@ export default function Inscription() {
                 <AnimatePresence mode="wait">
                   {step === 1 && <Step1 key="s1" data={form} onChange={handleChange} onNext={() => setStep(2)} />}
                   {step === 2 && <Step2 key="s2" data={form} onChange={handleChange} onNext={() => setStep(3)} onBack={() => setStep(1)} />}
-                  {step === 3 && <Step3 key="s3" data={form} onBack={() => setStep(2)} onSuccess={() => setDone(true)} />}
+                  {step === 3 && <Step3 key="s3" data={form} onBack={() => setStep(2)} onNext={() => setStep(4)} />}
+                  {step === 4 && <Step4 key="s4" data={form} onBack={() => setStep(3)} onSuccess={() => setDone(true)} />}
                 </AnimatePresence>
               </>
             ) : (
