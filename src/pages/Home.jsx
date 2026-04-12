@@ -39,51 +39,51 @@ export default function Home() {
           <img src="/hero-bg.png" alt="" className="w-full max-w-5xl h-auto object-contain" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
           <motion.div {...fadeUp} className="max-w-4xl mx-auto">
-            <h1 className="font-arabic text-[2.8rem] sm:text-6xl md:text-7xl lg:text-8xl font-black text-gray-900 leading-[1.1] mb-8">
+            <h1 className="font-arabic text-[2.4rem] xs:text-[2.8rem] sm:text-6xl md:text-7xl lg:text-8xl font-black text-gray-900 leading-[1.05] mb-8 tracking-tight">
               L'excellence de{' '}
               <span className="text-emerald-700 italic">la langue arabe</span>
               {' '}à votre portée.
             </h1>
-            <p className="text-lg sm:text-xl text-gray-500 font-medium leading-relaxed max-w-2xl mx-auto mb-12">
+            <p className="text-base sm:text-lg md:text-xl text-gray-500 font-medium leading-relaxed max-w-2xl mx-auto mb-12 px-4">
               Institut de référence à Toulouse. Pédagogie certifiée CECRL pour une maîtrise complète, du niveau débutant à l'expertise.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
-              <Link to="/programmes" className="btn-primary px-12 py-5 text-lg shadow-2xl shadow-emerald-900/20 inline-flex items-center justify-center gap-2 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 px-4">
+              <Link to="/programmes" className="btn-primary px-10 py-5 text-base sm:text-lg shadow-2xl shadow-emerald-900/20 inline-flex items-center justify-center gap-2 w-full sm:w-auto">
                 Voir nos cours <ArrowRight size={20} />
               </Link>
-              <Link to="/inscription" className="btn-outline px-12 py-5 text-lg inline-flex items-center justify-center w-full sm:w-auto hover:bg-gray-50 transition-colors">
+              <Link to="/inscription" className="btn-outline px-10 py-5 text-base sm:text-lg inline-flex items-center justify-center w-full sm:w-auto hover:bg-gray-50 transition-colors">
                 Pré-inscription
               </Link>
             </div>
 
-            <div className="mt-16 pt-10 border-t border-gray-100 flex flex-wrap items-center justify-center gap-12">
+            <div className="mt-16 pt-10 border-t border-gray-100 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 items-center">
               <div className="text-center group cursor-default">
-                <p className="text-3xl font-black text-gray-900 group-hover:text-emerald-700 transition-colors"><Counter value={1300} />+</p>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-2">Étudiants</p>
+                <p className="text-2xl sm:text-3xl font-black text-gray-900 group-hover:text-emerald-700 transition-colors"><Counter value={1300} />+</p>
+                <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-2">Étudiants</p>
               </div>
               <div className="text-center group cursor-default">
-                <p className="text-3xl font-black text-gray-900 group-hover:text-emerald-700 transition-colors"><Counter value={12} /></p>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-2">Enseignants</p>
+                <p className="text-2xl sm:text-3xl font-black text-gray-900 group-hover:text-emerald-700 transition-colors"><Counter value={12} /></p>
+                <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-2">Enseignants</p>
               </div>
               <div className="text-center group cursor-default">
-                <p className="text-3xl font-black text-gray-900 group-hover:text-emerald-700 transition-colors"><Counter value={15} /> ans</p>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-2">Expertise</p>
+                <p className="text-2xl sm:text-3xl font-black text-gray-900 group-hover:text-emerald-700 transition-colors"><Counter value={15} /> ans</p>
+                <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-2">Expertise</p>
               </div>
               
-              <div className="flex flex-col items-center gap-3">
+              <div className="flex flex-col items-center gap-3 col-span-2 md:col-span-1 border-t md:border-t-0 md:border-l border-gray-100 pt-8 md:pt-0 md:pl-8">
                 <div className="flex -space-x-3">
                   {[11,22,33,44,55].map(i => (
-                    <img key={i} src={`https://i.pravatar.cc/80?u=${i}`} alt="" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-md" />
+                    <img key={i} src={`https://i.pravatar.cc/80?u=${i}`} alt="" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white object-cover shadow-md" />
                   ))}
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="flex gap-0.5 text-amber-400">
-                    {[...Array(5)].map((_,j)=><Star key={j} size={12} fill="currentColor"/>)}
+                    {[...Array(5)].map((_,j)=><Star key={j} size={10} fill="currentColor"/>)}
                   </div>
-                  <p className="text-[10px] text-gray-400 font-bold mt-1 uppercase tracking-widest">Rejoignez-nous</p>
+                  <p className="text-[9px] text-gray-400 font-bold mt-1 uppercase tracking-widest">Rejoignez-nous</p>
                 </div>
               </div>
             </div>
@@ -92,13 +92,13 @@ export default function Home() {
       </section>
 
       {/* Avantages */}
-      <section className="py-20 md:py-28 bg-gray-50 border-y border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center max-w-xl mx-auto mb-16">
+      <section className="py-16 md:py-28 bg-gray-50 border-y border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest bg-white px-5 py-2 rounded-full border border-gray-100 shadow-sm mb-6 inline-block">Notre méthode</span>
-            <h2 className="font-arabic text-4xl md:text-5xl font-black text-gray-900 mb-4">Apprentissage <span className="text-emerald-700 italic">supérieur.</span></h2>
+            <h2 className="font-arabic text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4">Apprentissage <span className="text-emerald-700 italic">supérieur.</span></h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
               { title: 'Supports Numériques', desc: 'Portail e-learning disponible 24h/7j avec ressources interactives.' },
               { title: 'Diplômes Certifiés', desc: 'Programmes alignés sur le cadre européen CECRL (A1→C2).' },

@@ -90,7 +90,6 @@ const programmes = [
 
 export default function Programmes() {
   const [activeTab, setActiveTab] = useState('presentiel');
-
   const filteredProgrammes = programmes.filter(p => p.type === activeTab);
 
   return (
@@ -98,30 +97,30 @@ export default function Programmes() {
       <Nav />
 
       {/* Header */}
-      <section className="pt-32 pb-12 md:pt-40 md:pb-16 bg-gray-50 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="max-w-2xl">
+      <section className="pt-32 pb-12 md:pt-44 md:pb-20 bg-gray-50 border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0">
               <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest block mb-5">Nos Formations</span>
-              <h1 className="font-arabic text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-6 leading-tight">
-                Choisissez votre <span className="text-emerald-700 italic">mode d'apprentissage.</span>
+              <h1 className="font-arabic text-[2.2rem] sm:text-5xl md:text-6xl font-black text-gray-900 mb-6 leading-[1.1]">
+                Choisissez votre <br className="hidden sm:block" /> <span className="text-emerald-700 italic">mode d'apprentissage.</span>
               </h1>
-              <p className="text-lg text-gray-500 font-medium leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-500 font-medium leading-relaxed max-w-xl mx-auto lg:mx-0">
                 Que vous soyez à Toulouse ou ailleurs, nous avons le programme idéal pour votre progression.
               </p>
             </motion.div>
 
             {/* Tab Switcher */}
-            <div className="flex p-1.5 bg-gray-200/50 rounded-2xl w-fit border border-gray-200 self-start md:self-auto">
+            <div className="flex p-1.5 bg-gray-200/40 rounded-[2rem] w-full sm:w-fit border border-gray-200/60 mx-auto lg:mx-0 shadow-inner">
               <button 
                 onClick={() => setActiveTab('presentiel')}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all ${activeTab === 'presentiel' ? 'bg-white text-emerald-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-black transition-all ${activeTab === 'presentiel' ? 'bg-white text-emerald-700 shadow-md translate-y-[-1px]' : 'text-gray-500 hover:text-gray-700'}`}
               >
                 <MapPin size={16} /> Présentiel
               </button>
               <button 
                 onClick={() => setActiveTab('distanciel')}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all ${activeTab === 'distanciel' ? 'bg-white text-emerald-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-black transition-all ${activeTab === 'distanciel' ? 'bg-white text-emerald-700 shadow-md translate-y-[-1px]' : 'text-gray-500 hover:text-gray-700'}`}
               >
                 <Monitor size={16} /> Distanciel
               </button>
@@ -132,10 +131,10 @@ export default function Programmes() {
 
       {/* Programmes Grid */}
       <section className="py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             layout
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             <AnimatePresence mode="popLayout">
               {filteredProgrammes.map((p, i) => (
@@ -146,43 +145,43 @@ export default function Programmes() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
-                  className={`rounded-3xl border flex flex-col overflow-hidden ${p.highlight ? 'border-emerald-200 shadow-2xl shadow-emerald-900/10' : 'border-gray-100 shadow-sm'}`}
+                  className={`rounded-[2.5rem] border flex flex-col overflow-hidden transition-all duration-500 ${p.highlight ? 'border-emerald-200 shadow-2xl shadow-emerald-900/10' : 'border-gray-100 shadow-sm hover:shadow-xl hover:shadow-gray-200/50'}`}
                 >
                   {p.highlight && (
                     <div className="bg-emerald-700 text-white text-center py-2.5 text-[10px] font-black uppercase tracking-widest">
                       ★ Recommandé
                     </div>
                   )}
-                  <div className="p-8 flex flex-col flex-1 bg-white">
+                  <div className="p-8 md:p-10 flex flex-col flex-1 bg-white">
                     <div className="flex items-start justify-between mb-6">
                       <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${p.badgeColor}`}>{p.badge}</span>
                       <span className="text-xs text-gray-400 font-bold">{p.level}</span>
                     </div>
-                    <h3 className="font-arabic text-xl font-black text-gray-900 mb-3">{p.title}</h3>
+                    <h3 className="font-arabic text-xl sm:text-2xl font-black text-gray-900 mb-3">{p.title}</h3>
                     <p className="text-sm text-gray-500 leading-relaxed mb-6 h-12 overflow-hidden">{p.desc}</p>
 
-                    <div className="grid grid-cols-2 gap-3 mb-6">
-                      <div className="flex items-center gap-2 text-xs text-gray-500"><Clock size={13} className="text-emerald-600" />{p.duration}</div>
-                      <div className="flex items-center gap-2 text-xs text-gray-500"><BookOpen size={13} className="text-emerald-600" />{p.sessions}</div>
-                      <div className="flex items-center gap-3 text-xs text-gray-500"><Users size={13} className="text-emerald-600" />{p.size}</div>
-                      <div className="flex items-center gap-2 text-xs text-gray-500"><Award size={13} className="text-emerald-600" />Certifié</div>
+                    <div className="grid grid-cols-2 gap-4 mb-8">
+                      <div className="flex items-center gap-2 text-xs text-gray-400 font-bold uppercase tracking-tight"><Clock size={14} className="text-emerald-600" />{p.duration}</div>
+                      <div className="flex items-center gap-2 text-xs text-gray-400 font-bold uppercase tracking-tight"><BookOpen size={14} className="text-emerald-600" />{p.sessions}</div>
+                      <div className="flex items-center gap-2 text-xs text-gray-400 font-bold uppercase tracking-tight"><Users size={14} className="text-emerald-600" />{p.size}</div>
+                      <div className="flex items-center gap-2 text-xs text-gray-400 font-bold uppercase tracking-tight"><Award size={14} className="text-emerald-600" />Certifié</div>
                     </div>
 
-                    <ul className="flex flex-col gap-2 mb-8 flex-1">
+                    <ul className="flex flex-col gap-3 mb-10 flex-1">
                       {p.items.map(item => (
-                        <li key={item} className="flex items-start gap-2 text-sm text-gray-600">
-                          <CheckCircle2 size={14} className="text-emerald-600 mt-0.5 flex-shrink-0" />{item}
+                        <li key={item} className="flex items-start gap-3 text-sm text-gray-600 font-medium">
+                          <CheckCircle2 size={16} className="text-emerald-600 mt-0.5 flex-shrink-0" />{item}
                         </li>
                       ))}
                     </ul>
 
-                    <div className="flex items-center justify-between border-t border-gray-50 pt-6">
+                    <div className="flex items-center justify-between border-t border-gray-50 pt-8 mt-auto">
                       <div>
-                        <p className="text-2xl font-black text-gray-900">{p.price}</p>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase">/ session</p>
+                        <p className="text-2xl sm:text-3xl font-black text-gray-900">{p.price}</p>
+                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">/ session</p>
                       </div>
-                      <Link to="/inscription" className={`px-6 py-3 rounded-2xl font-bold text-sm transition-all hover:scale-105 ${p.highlight ? 'bg-emerald-700 text-white shadow-lg shadow-emerald-900/20' : 'bg-gray-50 text-gray-900 hover:bg-emerald-700 hover:text-white'}`}>
-                        Détails <ArrowRight size={14} className="inline ml-1" />
+                      <Link to="/inscription" className={`px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all hover:scale-105 active:scale-95 ${p.highlight ? 'bg-emerald-700 text-white shadow-lg shadow-emerald-900/20' : 'bg-gray-50 text-gray-900 hover:bg-emerald-700 hover:text-white'}`}>
+                        S'inscrire
                       </Link>
                     </div>
                   </div>
@@ -194,19 +193,25 @@ export default function Programmes() {
       </section>
 
       {/* FAQ */}
-      <section className="py-16 md:py-24 bg-gray-50 border-t border-gray-100">
+      <section className="py-20 md:py-32 bg-gray-50 border-t border-gray-100">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <h2 className="font-arabic text-3xl md:text-4xl font-black text-gray-900 mb-12 text-center">Questions fréquentes.</h2>
+          <h2 className="font-arabic text-3xl md:text-5xl font-black text-gray-900 mb-16 text-center">Questions fréquentes.</h2>
           <div className="flex flex-col gap-6">
             {[
               { q: 'Puis-je changer de mode en cours d\'année ?', a: 'Oui, sous réserve de places disponibles, vous pouvez passer du distanciel au présentiel si votre emploi du temps change.' },
               { q: 'Comment se passent les cours en ligne ?', a: 'Ils ont lieu en direct sur Zoom avec un professeur. Vous pouvez interagir, poser vos questions et les cours sont enregistrés si vous ratez une séance.' },
               { q: 'Où se situe l\'institut à Toulouse ?', a: 'Nous sommes situés en plein centre-ville, à deux pas du métro Jean Jaurès, pour un accès facile.' },
-            ].map(({ q, a }) => (
-              <div key={q} className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm">
-                <p className="font-bold text-gray-900 mb-3">{q}</p>
-                <p className="text-sm text-gray-500 leading-relaxed">{a}</p>
-              </div>
+            ].map(({ q, a }, idx) => (
+              <motion.div 
+                key={q} 
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                className="p-8 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+              >
+                <p className="font-black text-gray-900 mb-4 text-lg">{q}</p>
+                <p className="text-base text-gray-500 leading-relaxed font-medium">{a}</p>
+              </motion.div>
             ))}
           </div>
         </div>

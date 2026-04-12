@@ -57,17 +57,22 @@ const submitClass = () => {
   newClass.name = ''; newClass.teacher = ''; newClass.days = ''
 }
 
-const submitStudent = () => {
-  actions.addStudent({ ...newStudent, amount: newStudent.plan === 'Premium' ? '299€' : '29€' })
-  showStudentModal.value = false
-  newStudent.name = ''; newStudent.email = ''
+const showMobileMenu = ref(false)
+
+const handleLogout = () => {
+  emit('logout')
 }
 </script>
 
 <template>
-  <div class="min-h-screen bg-white flex font-sans text-slate-900 antialiased">
+  <div class="min-h-screen bg-white flex font-sans text-slate-900 antialiased overflow-hidden">
+    <!-- Overlay for mobile menu -->
+    <div v-if="showMobileMenu" @click="showMobileMenu = false" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 md:hidden"></div>
+
     <!-- Sidebar -->
-    <aside class="w-72 bg-[#0F172A] text-white hidden md:flex flex-col relative overflow-hidden">
+    <aside 
+      :class="[showMobileMenu ? 'translate-x-0' : '-translate-x-full md:translate-x-0']"
+      class="fixed inset-y-0 left-0 w-72 bg-[#0F172A] text-white z-50 md:relative md:flex flex-col overflow-hidden transition-transform duration-300 ease-in-out">
       <!-- Sidebar Background Decor -->
       <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-emerald-500/10 to-transparent pointer-events-none"></div>
       
@@ -83,27 +88,27 @@ const submitStudent = () => {
 
       <nav class="flex-1 px-6 mt-6 space-y-2 relative z-10">
         <Button variant="ghost" 
-          @click="activeTab = 'overview'"
+          @click="activeTab = 'overview'; showMobileMenu = false"
           :class="[activeTab === 'overview' ? 'bg-emerald-500 text-white shadow-[0_10px_20px_rgba(16,185,129,0.2)]' : 'text-slate-400 hover:text-white hover:bg-white/5']"
-          class="w-full justify-start gap-3 h-12 font-bold uppercase tracking-widest text-[10px] transition-all">
+          class="w-full justify-start gap-3 h-12 font-bold uppercase tracking-widest text-[10px] transition-all text-left">
           <LayoutDashboard :size="18" /> Aperçu Global
         </Button>
         <Button variant="ghost" 
-          @click="activeTab = 'classes'"
+          @click="activeTab = 'classes'; showMobileMenu = false"
           :class="[activeTab === 'classes' ? 'bg-emerald-500 text-white shadow-[0_10px_20px_rgba(16,185,129,0.2)]' : 'text-slate-400 hover:text-white hover:bg-white/5']"
-          class="w-full justify-start gap-3 h-12 font-bold uppercase tracking-widest text-[10px] transition-all">
+          class="w-full justify-start gap-3 h-12 font-bold uppercase tracking-widest text-[10px] transition-all text-left">
           <BookOpen :size="18" /> Gestion Classes
         </Button>
         <Button variant="ghost" 
-          @click="activeTab = 'enrollments'"
+          @click="activeTab = 'enrollments'; showMobileMenu = false"
           :class="[activeTab === 'enrollments' ? 'bg-emerald-500 text-white shadow-[0_10px_20px_rgba(16,185,129,0.2)]' : 'text-slate-400 hover:text-white hover:bg-white/5']"
-          class="w-full justify-start gap-3 h-12 font-bold uppercase tracking-widest text-[10px] transition-all">
+          class="w-full justify-start gap-3 h-12 font-bold uppercase tracking-widest text-[10px] transition-all text-left">
           <Plus :size="18" /> Inscriptions
         </Button>
         <Button variant="ghost" 
-          @click="activeTab = 'billing'"
+          @click="activeTab = 'billing'; showMobileMenu = false"
           :class="[activeTab === 'billing' ? 'bg-emerald-500 text-white shadow-[0_10px_20px_rgba(16,185,129,0.2)]' : 'text-slate-400 hover:text-white hover:bg-white/5']"
-          class="w-full justify-start gap-3 h-12 font-bold uppercase tracking-widest text-[10px] transition-all">
+          class="w-full justify-start gap-3 h-12 font-bold uppercase tracking-widest text-[10px] transition-all text-left">
           <DollarSign :size="18" /> Facturation
         </Button>
       </nav>
@@ -120,7 +125,7 @@ const submitStudent = () => {
                 <p class="text-[9px] text-slate-500">Session Active</p>
              </div>
           </div>
-          <Button variant="ghost" class="w-full justify-start gap-3 p-0 h-auto text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-red-400 transition-colors" @click="emit('logout')">
+          <Button variant="ghost" class="w-full justify-start gap-3 p-0 h-auto text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-red-400 transition-colors" @click="handleLogout">
             <LogOut :size="14" /> Déconnexion
           </Button>
         </div>
@@ -128,18 +133,26 @@ const submitStudent = () => {
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-12 overflow-y-auto bg-slate-50/50">
+    <main class="flex-1 p-6 md:p-12 overflow-y-auto bg-slate-50/50">
       <!-- Section: Header -->
-      <div class="flex items-center justify-between mb-16">
-        <div>
-          <h2 class="text-4xl font-black text-slate-900 tracking-tighter uppercase italic">
-            {{ activeTab === 'overview' ? 'Aperçu' : activeTab === 'classes' ? 'Classes' : activeTab === 'enrollments' ? 'Inscriptions' : 'Finance' }}
-            <span class="text-emerald-500">.</span>
-          </h2>
-          <p class="text-slate-400 font-medium text-sm mt-2 tracking-wide">Interface de pilotage ISHEECOLE v1.1</p>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12 md:mb-16">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <Button variant="ghost" @click="showMobileMenu = true" class="md:hidden p-0 h-10 w-10 text-slate-600">
+              <span class="sr-only">Menu</span>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </Button>
+            <div>
+              <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter uppercase italic">
+                {{ activeTab === 'overview' ? 'Aperçu' : activeTab === 'classes' ? 'Classes' : activeTab === 'enrollments' ? 'Inscriptions' : 'Finance' }}
+                <span class="text-emerald-500">.</span>
+              </h2>
+              <p class="hidden sm:block text-slate-400 font-medium text-xs mt-1 tracking-wide">Interface de pilotage ISHEECOLE v1.1</p>
+            </div>
+          </div>
         </div>
         <div class="flex items-center gap-4">
-          <Button @click="activeTab === 'classes' ? showClassModal = true : showStudentModal = true" class="bg-[#0F172A] hover:bg-emerald-600 text-white h-12 px-8 font-bold uppercase tracking-widest text-[10px] gap-3 shadow-xl transition-all hover:translate-y-[-2px]">
+          <Button @click="activeTab === 'classes' ? showClassModal = true : showStudentModal = true" class="w-full sm:w-auto bg-[#0F172A] hover:bg-emerald-600 text-white h-12 px-8 font-bold uppercase tracking-widest text-[10px] gap-3 shadow-xl transition-all hover:translate-y-[-2px]">
             <Plus :size="18" /> {{ activeTab === 'classes' ? 'Nouvelle classe' : 'Nouvel élève' }}
           </Button>
         </div>
@@ -205,8 +218,8 @@ const submitStudent = () => {
               </div>
             </div>
           </CardHeader>
-          <CardContent class="p-0">
-            <Table>
+          <CardContent class="p-0 overflow-x-auto">
+            <Table class="min-w-[800px] md:min-w-full">
               <TableHeader class="bg-slate-50/50 border-b border-slate-100">
                 <TableRow class="border-none h-14">
                   <TableHead class="pl-10 font-bold uppercase text-[10px] tracking-widest text-slate-400">Élève</TableHead>
@@ -283,8 +296,8 @@ const submitStudent = () => {
             <CardTitle>Nouveaux inscrits payés</CardTitle>
             <CardDescription>Élèves ayant complété leur paiement récemment.</CardDescription>
           </CardHeader>
-          <CardContent class="p-0 text-left">
-            <Table>
+          <CardContent class="p-0 text-left overflow-x-auto">
+            <Table class="min-w-[700px] md:min-w-full">
               <TableHeader class="bg-slate-50">
                 <TableRow>
                   <TableHead class="pl-8">Élève</TableHead>
@@ -315,8 +328,8 @@ const submitStudent = () => {
               <CheckCircle2 :size="20" /> Paiements Réussis
             </CardTitle>
           </CardHeader>
-          <CardContent class="p-0 text-left">
-            <Table>
+          <CardContent class="p-0 text-left overflow-x-auto">
+            <Table class="min-w-[700px] md:min-w-full">
               <TableHeader>
                 <TableRow>
                   <TableHead class="pl-8">Facture</TableHead>
@@ -344,8 +357,8 @@ const submitStudent = () => {
               <Clock :size="20" /> Paiements Refusés
             </CardTitle>
           </CardHeader>
-          <CardContent class="p-0 text-left">
-            <Table>
+          <CardContent class="p-0 text-left overflow-x-auto">
+            <Table class="min-w-[700px] md:min-w-full">
               <TableHeader>
                 <TableRow>
                   <TableHead class="pl-8">ID Erreur</TableHead>
