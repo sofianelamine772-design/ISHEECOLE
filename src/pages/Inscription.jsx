@@ -331,9 +331,6 @@ export default function Inscription() {
           {/* Top label */}
           {!done && (
             <div className="text-center mb-10">
-              <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest bg-white px-5 py-2 rounded-full border border-gray-100 shadow-sm inline-block">
-                ISHES · Inscription en ligne
-              </span>
               <h1 className="font-arabic text-3xl sm:text-4xl font-black text-gray-900 mt-5">
                 Rejoignez l'institut.
               </h1>
