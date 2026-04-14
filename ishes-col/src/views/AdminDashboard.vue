@@ -1,3 +1,4 @@
+<script setup>
 import { ref, inject, reactive, onMounted } from 'vue'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -76,6 +77,12 @@ const submitClass = () => {
   actions.addClass({ ...newClass })
   showClassModal.value = false
   newClass.name = ''; newClass.teacher = ''; newClass.days = ''
+}
+
+const submitStudent = () => {
+  actions.addStudent({ ...newStudent, status: 'Payé' })
+  showStudentModal.value = false
+  newStudent.name = ''; newStudent.email = ''; newStudent.plan = 'Premium'
 }
 
 const showMobileMenu = ref(false)
