@@ -8,12 +8,22 @@ import {
 import Nav from '../components/Nav';
 
 // ─── Prix par programme ──────────────────────────────────────────────────────
+import { createClient } from '@supabase/supabase-js';
+
+// Supabase client initialization
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
+
+// ─── Prix par programme (SYNCHRO LOGICIEL) ──────────────────────────────────
 const programmes = [
-  { id: 'litteraire-a1', label: 'Arabe Littéraire — Initiation (A1-A2)', price: 290, duration: '3 mois · 2 séances/sem' },
-  { id: 'litteraire-b1', label: 'Arabe Littéraire — Consolidation (B1-B2)', price: 360, duration: '4 mois · 2 séances/sem', popular: true },
-  { id: 'litteraire-c1', label: 'Arabe Littéraire — Maîtrise (C1-C2)', price: 490, duration: '6 mois · 3 séances/sem' },
-  { id: 'dialectal', label: 'Arabe Dialectal', price: 220, duration: '2 mois · 2 séances/sem' },
-  { id: 'intensif', label: 'Stage Intensif d\'Été', price: 540, duration: '4 semaines · 4h/jour' },
+  { id: 'adult_tajwid', label: 'Tajwid (Standard)', price: 349, duration: '8 mois · 1 séance/sem' },
+  { id: 'adult_tajwid_intensif', label: 'Tajwid Intensif', price: 649, duration: '3 mois · 2 séances/sem', popular: true },
+  { id: 'adult_tilawa', label: 'Tilawa', price: 349, duration: '4-8 mois · Flexible' },
+  { id: 'adult_hifdh', label: 'Hifdh', price: 349, duration: 'Continu · Accompagné' },
+  { id: 'kids_global', label: 'Cours Enfants & Ados', price: 349, duration: 'Annuel · Mercredi ou Weekend' },
+  { id: 'adult_fiqh', label: 'Fiqh Malikite (+ Aqida)', price: 349, duration: '8 mois · 1 séance/sem' },
 ];
 
 // ─── Step Indicator (MAJ : 4 étapes) ──────────────────────────────────────────
@@ -191,7 +201,37 @@ const Step4 = ({ data, onBack, onSuccess }) => {
   const handlePay = async (e) => {
     e.preventDefault();
     setPaying(true);
-    setTimeout(() => { setPaying(false); onSuccess(); }, 2000); // Simulated
+    
+    try {
+      // 1. Simulation du succès Stripe (en attendant ta clé réelle)
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // 2. Enregistrement automatique dans Supabase pour ISHEECOLE
+      const { error } = await supabase
+        .from('students')
+        .insert([{
+          prenom: data.prenom,
+          nom: data.nom,
+          email: data.email,
+          telephone: data.telephone,
+          niveau: data.niveau,
+          programme_id: data.programme,
+          status: 'Payé',
+          created_at: new Date().toISOString(),
+          amount: selected?.price
+        }]);
+
+      if (error) {
+        console.error('Erreur inscription Supabase:', error.message);
+        // On continue quand même pour l'expérience utilisateur, mais on log l'erreur
+      }
+
+      setPaying(false);
+      onSuccess();
+    } catch (err) {
+      console.error('Erreur système:', err);
+      setPaying(false);
+    }
   };
 
   return (

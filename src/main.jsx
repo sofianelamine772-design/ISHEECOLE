@@ -14,6 +14,7 @@ import Contact from './pages/Contact.jsx'
 import Inscription from './pages/Inscription.jsx'
 import MentionsLegales from './pages/MentionsLegales.jsx'
 import Boutique from './pages/Boutique.jsx'
+import FormationEnseignant from './pages/FormationEnseignant.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/programmes" element={<Programmes />} />
+        <Route path="/formation-enseignant" element={<FormationEnseignant />} />
         <Route path="/institut" element={<Institut />} />
         <Route path="/toulouse" element={<Toulouse />} />
         <Route path="/contact" element={<Contact />} />

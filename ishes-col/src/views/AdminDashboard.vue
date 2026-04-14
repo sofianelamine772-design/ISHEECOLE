@@ -1,5 +1,5 @@
-<script setup>
-import { ref, inject, reactive } from 'vue'
+import { ref, inject, reactive, onMounted } from 'vue'
+import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -30,6 +30,27 @@ const state = inject('state')
 const actions = inject('actions')
 
 const activeTab = ref('overview')
+
+// --- SUPABASE DATA ---
+const dbStudents = ref([])
+const isLoading = ref(true)
+
+const fetchStudents = async () => {
+  isLoading.value = true
+  const { data, error } = await supabase
+    .from('students')
+    .select('*')
+    .order('created_at', { ascending: false })
+  
+  if (!error) {
+    dbStudents.value = data
+  }
+  isLoading.value = false
+}
+
+onMounted(() => {
+  fetchStudents()
+})
 
 const students = state.students
 const classes = state.classes
@@ -293,25 +314,55 @@ const handleLogout = () => {
       <div v-if="activeTab === 'enrollments'">
         <Card class="border-none shadow-xl bg-white overflow-hidden">
           <CardHeader class="p-8 pb-4">
-            <CardTitle>Nouveaux inscrits payés</CardTitle>
-            <CardDescription>Élèves ayant complété leur paiement récemment.</CardDescription>
+            <div class="flex items-center justify-between">
+              <div>
+                <CardTitle>Nouveaux inscrits automatiques (Vitrine)</CardTitle>
+                <CardDescription>Élèves ayant complété leur inscription sur le site ISHES.</CardDescription>
+              </div>
+              <Button variant="outline" size="sm" @click="fetchStudents" :disabled="isLoading" class="gap-2">
+                <Clock :size="14" :class="{ 'animate-spin': isLoading }" /> Actualiser
+              </Button>
+            </div>
           </CardHeader>
           <CardContent class="p-0 text-left overflow-x-auto">
-            <Table class="min-w-[700px] md:min-w-full">
+            <div v-if="isLoading" class="p-10 text-center text-slate-400 font-medium">Chargement des données...</div>
+            <div v-else-if="dbStudents.length === 0" class="p-10 text-center text-slate-400 font-medium">Aucune nouvelle inscription pour le moment.</div>
+            <Table v-else class="min-w-[700px] md:min-w-full">
               <TableHeader class="bg-slate-50">
                 <TableRow>
                   <TableHead class="pl-8">Élève</TableHead>
-                  <TableHead>Date d'inscription</TableHead>
-                  <TableHead>Pack choisi</TableHead>
-                  <TableHead class="text-right pr-8">Montant</TableHead>
+                  <TableHead>Contact</TableHead>
+                  <TableHead>Programme</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead class="text-right pr-8">Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow v-for="en in recentEnrollments" :key="en.id">
-                  <TableCell class="pl-8 font-bold">{{ en.name }}</TableCell>
-                  <TableCell class="text-slate-500">{{ en.date }}</TableCell>
-                  <TableCell><Badge class="bg-green-100 text-green-700 border-none">{{ en.plan }}</Badge></TableCell>
-                  <TableCell class="text-right pr-8 font-black text-emerald-600">{{ en.amount }}</TableCell>
+                <TableRow v-for="std in dbStudents" :key="std.id">
+                  <TableCell class="pl-8">
+                    <div class="font-bold text-slate-900">{{ std.prenom }} {{ std.nom }}</div>
+                    <div class="text-[10px] text-slate-400 uppercase font-black uppercase italic">{{ std.niveau }}</div>
+                  </TableCell>
+                  <TableCell>
+                    <div class="text-sm font-medium">{{ std.email }}</div>
+                    <div class="text-xs text-slate-400">{{ std.telephone }}</div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge 
+                      :class="[
+                        std.programme_id?.includes('tajwid') ? 'bg-emerald-100 text-emerald-700' :
+                        std.programme_id?.includes('kids') ? 'bg-pink-100 text-pink-700' :
+                        'bg-blue-100 text-blue-700',
+                        'border-none font-bold text-[10px] uppercase truncate max-w-[150px]'
+                      ]"
+                    >
+                      {{ std.programme_id }}
+                    </Badge>
+                  </TableCell>
+                  <TableCell class="text-slate-500 text-sm italic">{{ new Date(std.created_at).toLocaleDateString() }}</TableCell>
+                  <TableCell class="text-right pr-8">
+                    <Badge variant="outline" class="border-emerald-500 text-emerald-600 font-black text-[9px] uppercase px-3">Assigné Auto</Badge>
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>

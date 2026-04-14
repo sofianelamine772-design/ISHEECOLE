@@ -6,6 +6,7 @@ import { Menu, X } from 'lucide-react';
 const navLinks = [
   { label: 'Accueil', to: '/' },
   { label: 'Programmes', to: '/programmes' },
+  { label: 'Formation Enseignant', to: '/formation-enseignant' },
   { label: 'L\'Institut', to: '/institut' },
   { label: 'Campus', to: '/toulouse' },
   { label: 'Boutique', to: '/boutique' },
