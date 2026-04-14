@@ -4,139 +4,96 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { 
   BookOpen, 
   Calendar, 
   CheckCircle2, 
   Clock, 
-  CreditCard, 
-  LayoutDashboard, 
   LogOut, 
-  Settings, 
   User,
-  School
+  School,
+  Video,
+  MessageCircle,
+  FileText,
+  PlayCircle
 } from 'lucide-vue-next'
 
 const emit = defineEmits(['logout'])
 const actions = inject('actions')
 
+// Données fictives pour l'étudiant (pourrait venir de Supabase plus tard)
 const student = {
   name: 'Sofiane Elamine',
   email: 'sofiane@ishes.com',
   avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sofiane',
-  subscriptionStatus: 'Actif',
-  expiryDate: '12 Juin 2026'
+  program: 'Arabe Adults (Standard)',
+  status: 'Inscrit & Payé',
+  level: 'Niveau 1 - Alpha',
+  whatsappUrl: '#',
+  zoomUrl: 'https://zoom.us/j/example'
 }
 
-const handleSubscribe = (plan, amount) => {
-  actions.addPayment({
-    student: student.name,
-    date: new Date().toLocaleDateString('fr-FR'),
-    amount: amount,
-    method: 'Carte Bancaire',
-    status: 'success'
-  })
-  showPaymentModal.value = false
-  alert('Paiement réussi ! Bienvenue dans le plan Premium.')
-}
-
-const courses = [
-  { id: 1, title: 'Stratégie Digitale', teacher: 'Pr. Martin', progress: 85, nextClass: 'Demain, 10:00' },
-  { id: 2, title: 'Intelligence Artificielle', teacher: 'Dr. Sarah', progress: 45, nextClass: 'Lundi, 14:00' },
-  { id: 3, title: 'Gestion de Projet', teacher: 'M. Thomas', progress: 100, nextClass: 'Terminé' },
+const myCourses = [
+  { id: 1, title: 'Alphabet & Phonétique (Arabe)', teacher: 'Pr. Abdelkrim', nextSession: 'Mardi 19h00', location: 'Zoom Live' },
+  { id: 2, title: 'Tajwid & Récitation', teacher: 'Cheikh Youssef', nextSession: 'Samedi 10h00', location: 'Zoom Live' },
 ]
 
-const recentGrades = [
-  { subject: 'Marketing', score: '18/20', date: '10 Avril 2026' },
-  { subject: 'Developpement Web', score: '19.5/20', date: '05 Avril 2026' },
-  { subject: 'Design UI/UX', score: '17/20', date: '28 Mars 2026' },
+const recentReplays = [
+  { id: 'r1', title: 'Cours 4 : Les lettres emphatiques', date: 'Hier', duration: '1h20' },
+  { id: 'r2', title: 'Cours 3 : Les voyelles courtes', date: 'Il y a 1 semaine', duration: '1h15' },
 ]
+
 const showMobileMenu = ref(false)
+
+const handleLogout = () => {
+  emit('logout')
+}
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-50 flex overflow-hidden font-sans">
+  <div class="min-h-screen bg-[#F8FAFC] flex overflow-hidden font-sans antialiased text-slate-900">
     <!-- Overlay for mobile menu -->
     <div v-if="showMobileMenu" @click="showMobileMenu = false" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 md:hidden"></div>
-
-    <!-- Payment Modal Overlay -->
-    <Transition name="fade">
-      <div v-if="showPaymentModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md">
-        <Card class="w-full max-w-xl shadow-2xl border-none overflow-hidden">
-          <CardHeader class="text-center p-8 bg-white border-b border-slate-50">
-            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-              <CreditCard :size="32" />
-            </div>
-            <CardTitle class="text-[2rem] font-black tracking-tight text-slate-900 uppercase italic">ISHEE<span class="text-blue-600">PREMIUM</span></CardTitle>
-            <CardDescription class="text-slate-400 font-bold uppercase text-[9px] tracking-[0.2em] mt-3">Débloquez l'accès illimité à l'excellence</CardDescription>
-          </CardHeader>
-          <CardContent class="grid md:grid-cols-2 gap-6 p-8 bg-white">
-            <div @click="handleSubscribe('Basic', '29€')" class="p-8 rounded-[2rem] border-2 border-slate-100 hover:border-blue-500 transition-all cursor-pointer group bg-slate-50/50">
-              <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Abonnement Mensuel</p>
-              <p class="text-4xl font-black text-slate-900">29€<span class="text-sm font-medium text-slate-400">/mois</span></p>
-              <ul class="mt-6 space-y-3 text-sm text-slate-500 font-medium">
-                <li class="flex items-center gap-3"><CheckCircle2 :size="16" class="text-blue-500" /> Accès standard</li>
-                <li class="flex items-center gap-3"><CheckCircle2 :size="16" class="text-blue-500" /> Support 24/7</li>
-              </ul>
-            </div>
-            <div @click="handleSubscribe('Premium', '299€')" class="p-8 rounded-[2rem] border-2 border-blue-600 bg-blue-50 relative overflow-hidden cursor-pointer shadow-lg shadow-blue-500/10">
-              <div class="absolute top-4 right-4">
-                <Badge class="bg-blue-600 text-white border-none font-bold text-[9px] uppercase tracking-widest px-3">Recommandé</Badge>
-              </div>
-              <p class="text-[10px] font-black text-blue-700 uppercase tracking-widest mb-4">Abonnement Annuel</p>
-              <p class="text-4xl font-black text-slate-900">299€<span class="text-sm font-medium text-slate-400">/an</span></p>
-              <ul class="mt-6 space-y-3 text-sm text-slate-500 font-medium">
-                <li class="flex items-center gap-3 font-bold text-blue-700"><CheckCircle2 :size="16" /> 2 mois offerts</li>
-                <li class="flex items-center gap-3"><CheckCircle2 :size="16" class="text-blue-500" /> Certificats certifiés</li>
-              </ul>
-            </div>
-          </CardContent>
-          <CardFooter class="flex gap-4 p-8 bg-slate-50/50 border-t border-slate-100">
-            <Button variant="ghost" class="flex-1 font-bold text-slate-400 uppercase tracking-widest text-[10px]" @click="showPaymentModal = false">Annuler</Button>
-            <Button class="flex-[2] bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest text-xs h-12 shadow-lg shadow-blue-600/20" @click="handleSubscribe('Premium', '299€')">Accéder au Premium</Button>
-          </CardFooter>
-        </Card>
-      </div>
-    </Transition>
 
     <!-- Sidebar -->
     <aside 
       :class="[showMobileMenu ? 'translate-x-0' : '-translate-x-full md:translate-x-0']"
       class="fixed inset-y-0 left-0 w-72 bg-[#0F172A] text-white z-50 md:relative md:flex flex-col overflow-hidden transition-transform duration-300 ease-in-out">
-      <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-blue-500/10 to-transparent pointer-events-none"></div>
       
-      <div class="p-10 relative z-10">
+      <div class="p-8 relative z-10 border-b border-white/5">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-[0_0_20px_rgba(37,99,235,0.4)]">
+          <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-emerald-500/20">
             <School :size="20" />
           </div>
-          <h1 class="text-2xl font-black tracking-tighter uppercase italic text-white">ISHEE<span class="text-blue-400">COLE</span></h1>
+          <h1 class="text-xl font-black tracking-tight uppercase italic">ISHEE<span class="text-emerald-400">COLE</span></h1>
         </div>
-        <p class="text-[9px] text-slate-500 mt-3 uppercase tracking-[0.4em] font-black pl-1">Student Portal v1</p>
       </div>
 
-      <nav class="flex-1 px-6 mt-6 space-y-2 relative z-10">
-        <Button variant="ghost" @click="showMobileMenu = false" class="w-full justify-start gap-3 h-12 bg-blue-600 text-white shadow-lg shadow-blue-600/20 font-bold uppercase tracking-widest text-[10px]">
-          <LayoutDashboard :size="20" /> Dashboard
+      <nav class="flex-1 px-6 mt-8 space-y-1 relative z-10">
+        <Button variant="ghost" class="w-full justify-start gap-4 h-12 bg-emerald-500 text-white font-bold uppercase tracking-widest text-[10px]">
+          <LayoutDashboard :size="18" /> Mon Espace Arabe
         </Button>
-        <Button variant="ghost" @click="showMobileMenu = false" class="w-full justify-start gap-3 text-slate-400 hover:text-white hover:bg-white/5 font-bold uppercase tracking-widest text-[10px]">
-          <BookOpen :size="20" /> Mes Cours
+        <Button variant="ghost" class="w-full justify-start gap-4 h-12 text-slate-400 hover:text-white hover:bg-white/5 font-bold uppercase tracking-widest text-[10px]">
+          <PlayCircle :size="18" /> Mes Replays
         </Button>
-        <Button variant="ghost" @click="showMobileMenu = false" class="w-full justify-start gap-3 text-slate-400 hover:text-white hover:bg-white/5 font-bold uppercase tracking-widest text-[10px]">
-          <Calendar :size="20" /> Emploi du temps
-        </Button>
-        <Button variant="ghost" @click="showPaymentModal = true; showMobileMenu = false" class="w-full justify-start gap-3 text-slate-400 hover:text-white hover:bg-white/5 font-bold uppercase tracking-widest text-[10px]">
-          <CreditCard :size="20" /> Abonnement
-        </Button>
-        <Button variant="ghost" @click="showMobileMenu = false" class="w-full justify-start gap-3 text-slate-400 hover:text-white hover:bg-white/5 font-bold uppercase tracking-widest text-[10px]">
-          <Settings :size="20" /> Paramètres
+        <Button variant="ghost" class="w-full justify-start gap-4 h-12 text-slate-400 hover:text-white hover:bg-white/5 font-bold uppercase tracking-widest text-[10px]">
+          <FileText :size="18" /> Supports PDF
         </Button>
       </nav>
 
-      <div class="p-8 relative z-10">
-        <Button variant="ghost" class="w-full justify-start gap-3 h-12 text-slate-500 hover:text-red-400 font-bold uppercase tracking-widest text-[10px]" @click="emit('logout')">
-          <LogOut :size="20" /> Déconnexion
+      <div class="p-8 relative z-10 border-t border-white/5">
+        <div class="flex items-center gap-3 mb-6">
+          <Avatar class="h-10 w-10 ring-2 ring-emerald-500/20">
+            <AvatarImage :src="student.avatar" />
+            <AvatarFallback>SE</AvatarFallback>
+          </Avatar>
+          <div class="overflow-hidden">
+            <p class="text-xs font-black uppercase truncate text-white">{{ student.name }}</p>
+            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest truncate">{{ student.program }}</p>
+          </div>
+        </div>
+        <Button variant="ghost" class="w-full justify-start gap-3 p-0 h-auto text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-red-400 transition-colors" @click="handleLogout">
+          <LogOut :size="16" /> Se Déconnecter
         </Button>
       </div>
     </aside>
@@ -144,121 +101,124 @@ const showMobileMenu = ref(false)
     <!-- Main Content -->
     <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
       <!-- Header -->
-      <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 md:px-12">
+      <header class="h-20 bg-white border-b border-slate-100 flex items-center justify-between px-6 md:px-12">
         <div class="flex items-center gap-4">
           <Button variant="ghost" @click="showMobileMenu = true" class="md:hidden p-0 h-10 w-10 text-slate-600">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
           </Button>
-          <h2 class="text-xl font-black text-slate-900 tracking-tight uppercase italic hidden sm:block">Pilotage <span class="text-blue-600">Élève.</span></h2>
-          <h2 class="text-lg font-black text-blue-600 tracking-tight uppercase italic sm:hidden">Dashboard.</h2>
+          <h2 class="text-xl font-black text-slate-900 tracking-tighter uppercase italic underline decoration-emerald-500/30">Bienvenue <span class="text-emerald-600">Al-Talib.</span></h2>
         </div>
-        <div class="flex items-center gap-6">
-          <!-- Notification Bell -->
-          <div class="relative cursor-pointer group">
-            <div class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white flex items-center justify-center text-[8px] text-white font-bold">2</div>
-            <Calendar :size="22" class="text-muted-foreground group-hover:text-primary transition-colors" />
-          </div>
-          
-          <div class="flex items-center gap-4 border-l border-slate-100 pl-6 text-left">
-            <div class="text-right hidden sm:block">
-              <p class="text-sm font-bold leading-none">{{ student.name }}</p>
-              <p class="text-xs text-muted-foreground mt-1">{{ student.email }}</p>
-            </div>
-            <Avatar class="h-9 w-9 border-2 border-slate-100">
-              <AvatarImage :src="student.avatar" />
-              <AvatarFallback>SE</AvatarFallback>
-            </Avatar>
-          </div>
+        <div class="flex items-center gap-4">
+          <Badge class="bg-emerald-50 text-emerald-700 border-none font-bold text-[10px] uppercase shadow-sm px-4 h-8 flex items-center gap-2">
+            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div> Session Active
+          </Badge>
         </div>
       </header>
 
       <!-- Scrollable Area -->
-      <div class="flex-1 overflow-y-auto p-6 md:p-8 lg:p-12">
-        <!-- Dashboard Content -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <Card class="border-none shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader class="flex flex-row items-center justify-between pb-2">
-              <CardTitle class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Abonnement</CardTitle>
-              <CreditCard class="h-4 w-4 text-emerald-500" />
-            </CardHeader>
-            <CardContent>
-              <div class="text-2xl font-black text-slate-900 mt-2">
-                {{ student.subscriptionStatus }}
-                <Badge variant="outline" class="bg-emerald-50 text-emerald-700 border-emerald-100 text-[9px] font-black uppercase tracking-widest ml-2 px-2">Pro</Badge>
+      <div class="flex-1 overflow-y-auto p-6 md:p-12">
+        <!-- Dashboard Header -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          <Card class="lg:col-span-2 border-none shadow-xl bg-gradient-to-br from-[#0F172A] to-[#1E293B] text-white p-2 overflow-hidden relative group">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+            <CardContent class="p-10 relative z-10">
+              <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                <div>
+                  <Badge variant="outline" class="border-emerald-500/50 text-emerald-400 font-bold uppercase text-[9px] mb-4">Prochain cours en direct</Badge>
+                  <h3 class="text-4xl font-black tracking-tighter mb-2 italic">Alphabet & Phonétique</h3>
+                  <p class="text-slate-400 font-bold text-sm flex items-center gap-2">
+                    <Calendar :size="16" class="text-emerald-500" /> Mardi prochain à 19h00 (Heure France)
+                  </p>
+                </div>
+                <div class="flex flex-col gap-3">
+                  <a :href="student.zoomUrl" target="_blank">
+                    <Button class="bg-emerald-500 hover:bg-emerald-600 text-white font-black uppercase text-xs h-14 px-8 shadow-xl shadow-emerald-500/20 gap-3 group">
+                      <Video :size="20" class="group-hover:scale-110 transition-transform" /> Rejoindre la salle de classe
+                    </Button>
+                  </a>
+                  <a :href="student.whatsappUrl" target="_blank" class="w-full">
+                    <Button variant="outline" class="w-full border-white/10 hover:bg-white/5 text-white font-bold uppercase text-[10px] h-11 gap-3">
+                      <MessageCircle :size="18" class="text-emerald-400" /> Groupe WhatsApp Classe
+                    </Button>
+                  </a>
+                </div>
               </div>
-              <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight mt-2 italic">Expire le {{ student.expiryDate }}</p>
             </CardContent>
           </Card>
-          <Card class="border-none shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader class="flex flex-row items-center justify-between pb-2">
-              <CardTitle class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Cours en cours</CardTitle>
-              <BookOpen class="h-4 w-4 text-emerald-500" />
+
+          <Card class="border-none shadow-sm bg-white p-1">
+            <CardHeader>
+              <CardTitle class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Votre Progression</CardTitle>
             </CardHeader>
             <CardContent>
-              <div class="text-3xl font-black text-slate-900 mt-2">4</div>
-              <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight mt-2 italic">2 nouveaux cette semaine</p>
-            </CardContent>
-          </Card>
-          <Card class="border-none shadow-sm hover:shadow-md transition-shadow sm:col-span-2 lg:col-span-1">
-            <CardHeader class="flex flex-row items-center justify-between pb-2">
-              <CardTitle class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Moyenne Générale</CardTitle>
-              <CheckCircle2 class="h-4 w-4 text-emerald-500" />
-            </CardHeader>
-            <CardContent>
-              <div class="text-3xl font-black text-slate-900 mt-2">18.25/20</div>
-              <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-tight mt-2 italic flex items-center gap-1"><TrendingUp :size="10" /> +1.5 pts / mois dernier</p>
+              <div class="text-center py-6">
+                <div class="relative inline-flex items-center justify-center mb-6">
+                   <svg class="w-32 h-32 transform -rotate-90">
+                      <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="8" fill="transparent" class="text-slate-100" />
+                      <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="10" fill="transparent" stroke-dasharray="364.4" stroke-dashoffset="109.3" class="text-emerald-500" />
+                   </svg>
+                   <div class="absolute flex flex-col items-center">
+                     <p class="text-3xl font-black text-slate-900 tracking-tighter">Level 1</p>
+                     <p class="text-[10px] font-bold text-slate-400 uppercase">Alpha</p>
+                   </div>
+                </div>
+                <p class="text-[11px] font-bold text-slate-500 uppercase leading-relaxed tracking-tight underline decoration-emerald-200">Encore 4 cours pour <br/> valider le module Alphabet</p>
+              </div>
             </CardContent>
           </Card>
         </div>
 
-        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-12">
-          {/* Courses */}
-          <Card class="border-none shadow-sm overflow-hidden bg-white rounded-[2rem]">
-            <CardHeader class="p-8 pb-4">
-              <CardTitle class="text-xl font-black text-slate-800 uppercase italic">Mes Cours <span class="text-blue-600">Actuels</span></CardTitle>
-              <CardDescription class="text-slate-400 font-medium">Suivez votre progression en temps réel</CardDescription>
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-12">
+          {/* Replays */}
+          <Card class="border-none shadow-sm overflow-hidden bg-white rounded-2xl">
+            <CardHeader class="p-8 border-b border-slate-50 flex flex-row items-center justify-between">
+              <div>
+                <CardTitle class="text-lg font-black text-slate-800 uppercase italic">Replays <span class="text-emerald-500">Récents</span></CardTitle>
+                <CardDescription class="text-[10px] font-bold uppercase text-slate-400 mt-1">Regardez les cours manqués</CardDescription>
+              </div>
+              <Button variant="ghost" class="text-emerald-600 font-bold text-[10px] uppercase">Tout voir</Button>
             </CardHeader>
             <CardContent class="p-0">
-              <div v-for="course in courses" :key="course.id" class="p-8 border-t border-slate-50 flex items-center justify-between hover:bg-slate-50/50 transition-all group">
-                <div class="space-y-1">
-                  <p class="font-black text-slate-800 text-lg group-hover:text-blue-600 transition-colors">{{ course.title }}</p>
-                  <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Enseignant: {{ course.teacher }}</p>
-                </div>
-                <div class="text-right">
-                  <Badge class="bg-blue-600 text-white border-none font-bold text-[10px] mb-2 px-3">{{ course.progress }}%</Badge>
-                  <div class="flex items-center gap-2 text-[10px] font-black uppercase text-slate-400 tracking-tighter">
-                    <Clock :size="12" class="text-blue-400" /> {{ course.nextClass }}
+              <div v-for="video in recentReplays" :key="video.id" class="p-6 border-b border-slate-50 flex items-center justify-between hover:bg-slate-50/50 transition-all cursor-pointer group">
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-all">
+                    <PlayCircle :size="24" />
+                  </div>
+                  <div>
+                    <p class="font-bold text-slate-800 text-sm">{{ video.title }}</p>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">{{ video.date }} · {{ video.duration }}</p>
                   </div>
                 </div>
+                <Button variant="ghost" class="text-slate-300 group-hover:text-emerald-500">
+                   <Clock :size="18" />
+                </Button>
               </div>
             </CardContent>
           </Card>
 
-          {/* Grades Table */}
-          <Card class="border-none shadow-sm bg-white rounded-[2rem] overflow-hidden">
-            <CardHeader class="p-8 pb-4">
-              <CardTitle class="text-xl font-black text-slate-800 uppercase italic">Dernières <span class="text-emerald-500">Notes</span></CardTitle>
-              <CardDescription class="text-slate-400 font-medium">Vos derniers résultats d'examens</CardDescription>
+          {/* Supports */}
+          <Card class="border-none shadow-sm bg-white rounded-2xl overflow-hidden shadow-emerald-500/5">
+            <CardHeader class="p-8 border-b border-slate-50">
+              <CardTitle class="text-lg font-black text-slate-800 uppercase italic">Téléchargements <span class="text-blue-500">PDF</span></CardTitle>
+              <CardDescription class="text-[10px] font-bold uppercase text-slate-400 mt-1">Supports de cours & Exercices</CardDescription>
             </CardHeader>
-            <CardContent class="p-0 overflow-x-auto">
-              <Table class="min-w-[500px] md:min-w-full">
-                <TableHeader class="bg-slate-50/50">
-                  <TableRow class="border-none h-14">
-                    <TableHead class="pl-8 font-black uppercase text-[10px] tracking-widest text-slate-400">Matière</TableHead>
-                    <TableHead class="font-black uppercase text-[10px] tracking-widest text-slate-400">Date</TableHead>
-                    <TableHead class="text-right pr-8 font-black uppercase text-[10px] tracking-widest text-slate-400">Note</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow v-for="grade in recentGrades" :key="grade.subject" class="h-16 hover:bg-slate-50 border-b border-slate-50 last:border-none">
-                    <TableCell class="pl-8 font-black text-slate-700 text-sm">{{ grade.subject }}</TableCell>
-                    <TableCell class="text-xs font-bold text-slate-400 uppercase tracking-tighter">{{ grade.date }}</TableCell>
-                    <TableCell class="text-right pr-8">
-                      <span class="bg-emerald-50 text-emerald-700 px-4 py-1.5 rounded-full font-black text-sm border border-emerald-100 shadow-sm">{{ grade.score }}</span>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+            <CardContent class="p-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-6 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all cursor-pointer flex flex-col gap-4">
+                  <FileText :size="32" class="text-blue-500" />
+                  <div>
+                    <p class="font-black text-slate-800 text-sm leading-tight">Manuel d'Arabe - Alpha</p>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">PDF · 12 Mo</p>
+                  </div>
+                </div>
+                <div class="p-6 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all cursor-pointer flex flex-col gap-4">
+                  <CheckCircle2 :size="32" class="text-emerald-500" />
+                  <div>
+                    <p class="font-black text-slate-800 text-sm leading-tight">Cahier d'Exercices 01</p>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">PDF · 5 Mo</p>
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
