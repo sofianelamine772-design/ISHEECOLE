@@ -8,22 +8,27 @@ import {
 import Nav from '../components/Nav';
 
 // ─── Prix par programme ──────────────────────────────────────────────────────
-import { createClient } from '@supabase/supabase-js';
-
-// Supabase client initialization
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
+import { supabase } from '../lib/supabase';
 
 // ─── Prix par programme (SYNCHRO LOGICIEL) ──────────────────────────────────
 const programmes = [
+  // ADULTES - 349€
   { id: 'adult_tajwid', label: 'Tajwid (Standard)', price: 349, duration: '8 mois · 1 séance/sem' },
   { id: 'adult_tajwid_intensif', label: 'Tajwid Intensif', price: 649, duration: '3 mois · 2 séances/sem', popular: true },
   { id: 'adult_tilawa', label: 'Tilawa', price: 349, duration: '4-8 mois · Flexible' },
   { id: 'adult_hifdh', label: 'Hifdh', price: 349, duration: 'Continu · Accompagné' },
-  { id: 'kids_global', label: 'Cours Enfants & Ados', price: 349, duration: 'Annuel · Mercredi ou Weekend' },
+  { id: 'adult_arabe', label: 'Arabe Adults', price: 349, duration: '8 mois · 1 séance/sem' },
   { id: 'adult_fiqh', label: 'Fiqh Malikite (+ Aqida)', price: 349, duration: '8 mois · 1 séance/sem' },
+  { id: 'adult_sirah', label: 'Sîrah (Vie du Prophète)', price: 349, duration: '8 mois · 1 séance/sem' },
+  { id: 'adult_sciences_coran', label: 'Sciences du Coran', price: 349, duration: '8 mois · 1 séance/sem' },
+  { id: 'adult_spiritualite', label: 'Spiritualité (Tazkiyya)', price: 349, duration: '8 mois · 1 séance/sem' },
+  
+  // ENFANTS - 349€
+  { id: 'kids_global', label: 'Cours Enfants (Arabe, Coran, Éducation)', price: 349, duration: 'Annuel · Mercredi ou Weekend' },
+  { id: 'kids_ados', label: 'Classe Ados (Fiqh Spécial)', price: 349, duration: 'Annuel · Weekend' },
+
+  // PACKS
+  { id: 'pack_accompagnement', label: 'Pack Accompagnement (WhatsApp + Lives)', price: 49, duration: 'Accès Illimité' },
 ];
 
 // ─── Step Indicator (MAJ : 4 étapes) ──────────────────────────────────────────
